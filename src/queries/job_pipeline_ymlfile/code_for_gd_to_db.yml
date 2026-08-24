@@ -1,0 +1,59 @@
+resources:
+  jobs:
+    get_data_frm_gd_to_db:
+      name: get_data_frm_gd_to_db
+      schedule:
+        quartz_cron_expression: 4 31 16 * * ?
+        timezone_id: Europe/London
+        pause_status: UNPAUSED
+      tasks:
+        - task_key: source_to_landing
+          notebook_task:
+            notebook_path: /Workspace/Users/rajupatel2386@gmail.com/reeva_data_platform/src/notebooks/ds2landing
+            source: WORKSPACE
+        - task_key: ts_dim_batches
+          depends_on:
+            - task_key: source_to_landing
+          sql_task:
+            file:
+              path: /Workspace/Users/rajupatel2386@gmail.com/reeva_data_platform/src/queries/dimensions/dim_batch.sql
+              source: WORKSPACE
+            warehouse_id: bdff01beb64bce12
+        - task_key: ts_dim_classes
+          depends_on:
+            - task_key: source_to_landing
+          sql_task:
+            file:
+              path: /Workspace/Users/rajupatel2386@gmail.com/reeva_data_platform/src/queries/dimensions/dim_classes.sql
+              source: WORKSPACE
+            warehouse_id: bdff01beb64bce12
+        - task_key: ts_dim_dates
+          depends_on:
+            - task_key: source_to_landing
+          sql_task:
+            file:
+              path: /Workspace/Users/rajupatel2386@gmail.com/reeva_data_platform/src/queries/dimensions/dim_dates.sql
+              source: WORKSPACE
+            warehouse_id: bdff01beb64bce12
+        - task_key: ts_dim_students
+          depends_on:
+            - task_key: source_to_landing
+          sql_task:
+            file:
+              path: /Workspace/Users/rajupatel2386@gmail.com/reeva_data_platform/src/queries/dimensions/dim_student.sql
+              source: WORKSPACE
+            warehouse_id: bdff01beb64bce12
+        - task_key: ts_fact_table
+          depends_on:
+            - task_key: ts_dim_batches
+            - task_key: ts_dim_classes
+            - task_key: ts_dim_dates
+            - task_key: ts_dim_students
+          sql_task:
+            file:
+              path: /Workspace/Users/rajupatel2386@gmail.com/reeva_data_platform/src/queries/facts/fact_attendance.sql
+              source: WORKSPACE
+            warehouse_id: bdff01beb64bce12
+      queue:
+        enabled: true
+      performance_target: PERFORMANCE_OPTIMIZED
