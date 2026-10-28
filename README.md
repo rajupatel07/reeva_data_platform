@@ -19,7 +19,7 @@ flowchart LR
 
 ## 🔄 Pipeline Orchestration
 
-`src/queries/job_pipeline_ymlfile/code_for_gd_to_db.yml` defines the job `get_data_frm_gd_to_db` — a daily scheduled pipeline with queueing and task dependencies:
+`jobs_pipeline_yamlfile.yml` defines the job `get_data_frm_gd_to_db` — a daily scheduled pipeline with queueing and task dependencies:
 
 ```mermaid
 flowchart TD
@@ -58,13 +58,13 @@ Landing tables (raw): `students`, `batches`, `student_batch`, `classes`, `platfo
 
 ```text
 reeva_data_platform/
+├── jobs_pipeline_yamlfile.yml    # scheduled DABs job definition
 ├── src/
 │   ├── notebooks/
 │   │   └── ds2landing/            # Google Sheets → landing Delta tables
 │   └── queries/
 │       ├── dimensions/           # dim_student, dim_classes, dim_batch, dim_dates
-│       ├── facts/                # fact_attendance
-│       └── job_pipeline_ymlfile/ # scheduled DABs job definition
+│       └── facts/                # fact_attendance
 ├── documentation/                # design notes
 └── README.md
 ```
