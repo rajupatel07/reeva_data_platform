@@ -101,7 +101,3 @@ reeva_data_platform/
 * Additional fact tables (assignments, submissions, platform engagement)
 * Row-level data-quality expectations and freshness alerts
 * An AI/BI dashboard tracking attendance and dropout risk per batch
-
-## 📄 License
-
-This project is for portfolio / educational purposes.
